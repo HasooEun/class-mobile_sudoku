@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         button = new Button[10];
         textView = new TextView[9][9];
         flags = new boolean[9][9][3]; // [][][0] means question, [][][1] means not Empty, [][][2] means not error
-        lastRow = lastCol = -1;
 
         textView[0][0] = findViewById(R.id.textView00);
         textView[0][1] = findViewById(R.id.textView01);
@@ -138,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
         button[7] = findViewById(R.id.button7);
         button[8] = findViewById(R.id.button8);
         button[9] = findViewById(R.id.button9);
+    }
+
+    private void fillBoard(){
+
+        lastRow = lastCol = -1;
 
         // initialize text color and background color
         for(int i = 0; i<9; i++){
@@ -176,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        toggleButtons(true);
     }
 
     // 텍스트 뷰를 누르면 동작
