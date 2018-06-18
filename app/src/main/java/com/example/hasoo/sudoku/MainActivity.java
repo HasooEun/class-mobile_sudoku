@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item4:
                 item.setChecked(true);
             case R.id.itemReset:
-                initBoard();
+                fillBoard();
                 break;
         }
 
