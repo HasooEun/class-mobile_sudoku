@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         TextView stateMessage = findViewById(R.id.stateMessage);
         stateMessage.setText("빈칸을 클릭 후, 숫자 버튼을 눌러 주세요");
         initBoard();
+        fillBoard();
     }
 
     // 보드 초기화
@@ -220,7 +221,8 @@ public class MainActivity extends AppCompatActivity {
             // textView[lastRow][lastCol]의 글자 색을 검은 색으로 설정
             // 게임 종료 여부를 판단했을 때, 끝났다면
                 // "당신의 승리입니다"라는 메시지 출력
-                // 게임 초기화
+                // 보드 채우기 (fillBoard)
+                // 메소드 나가기(return;)
 
         // 만약 오류 검사를 했을 때, 오류가 있다면
             // textView[lastRow][lastCol]의 글자 색을 빨간 색으로 설정
