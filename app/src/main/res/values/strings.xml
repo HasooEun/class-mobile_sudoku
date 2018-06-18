@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Hanyang Sudoku</string>
+    <string name="sample">0</string>
+    <string name="reset">초기화</string>
+    <string name="selectLevel">난이도 선택</string>
+    <string name="초급">초급</string>
+    <string name="중급">중급</string>
+    <string name="고급">고급</string>
+    <string name="최고급">최고급</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+</resources>
