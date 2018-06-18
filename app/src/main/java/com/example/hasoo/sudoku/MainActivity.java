@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        toggleButtons(true);
+        toggleButtons(false);
     }
 
     // 텍스트 뷰를 누르면 동작
