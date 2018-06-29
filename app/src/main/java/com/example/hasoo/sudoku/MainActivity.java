@@ -28,15 +28,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView stateMessage = findViewById(R.id.stateMessage);
         stateMessage.setText("빈칸을 클릭 후, 숫자 버튼을 눌러 주세요");
-        initBoard();
+        initVariables();
         fillBoard();
     }
 
     // 보드 초기화
-    private void initBoard(){
+    private void initVariables(){
         button = new Button[10];
         textView = new TextView[9][9];
-        flags = new boolean[9][9][3]; // [][][0] means question, [][][1] means not Empty, [][][2] means not error
+        flags = new boolean[9][9][3]; // [][][0] means question, [][][1] means not Empty, [][][2] means no error
 
         textView[0][0] = findViewById(R.id.textView00);
         textView[0][1] = findViewById(R.id.textView01);
@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillBoard(){
-
         lastRow = lastCol = -1;
 
         // initialize text color and background color
@@ -188,48 +187,72 @@ public class MainActivity extends AppCompatActivity {
     // 텍스트 뷰를 누르면 동작
     public void onTextViewClicked(View v){
 
-        // 텍스트뷰의 이름에서 위치를 가져옴
+        int [] pos = getPosition(v);
 
-        // question일 경우를 대비한 가드 (return)
+        // question일 경우를 대비한 가드
+        if(flags[pos[0]][pos[1]][0]){
+            return;
+        }
 
-        // 만약 이전에 클릭한 기록이 없다면
+        if(lastRow == -1 && lastCol == -1){ // 이전 클릭이 없다면
             // 십자 색상 표시
+            crossColoring(pos[0], pos[1], true);
             // 하단 버튼 활성화
-            // 현재 위치를 lastRow, lastCol에 저장
-
-        // 이전에 클릭한 기록이 있다면
+            toggleButtons(true);
+            // 현재 위치를 이전 위치로 저장
+            lastRow = pos[0];
+            lastCol = pos[1];
+        } else {            // 처음 클릭한게 아니라면?
             // 우선 십자 색상 제거
+            crossColoring(lastRow, lastCol, false);
 
-            // lastRow, lastCol과 같은 곳을 클릭 했다면?
+            // 같은 곳을 클릭 했다면?
+            if(lastRow == pos[0] && lastCol == pos[1]){
                 // 이전 클릭 내역 지우기
+                lastRow = lastCol = -1;
                 // 버튼 비활성화
+                toggleButtons(false);
 
-            // lastRow, lastCol과 다른 곳을 클릭 했다면?
+            }else{          // 다른 곳을 클릭 했다면?
                 // 옮긴 위치에 대하여 십자 색상 표시
-                // 옮긴 위치를 lastRow, lastCol에 저장
+                crossColoring(pos[0], pos[1], true);
+                // 옮긴 위치를 이전 위치로 저장
+                lastRow = pos[0];
+                lastCol = pos[1];
+
+            }
+        }
     }
 
     // 숫자 버튼을 누르면 동작
     public void onButtonClicked(View v){
 
         // 버튼의 text를 텍스트뷰의 text로 설정
+        String buttonText = ((Button)v).getText().toString();
+        textView[lastRow][lastCol].setText(buttonText);
 
-        // flags[lastRow][lastCol][1]에 버튼의 text가 empty인지 저장
-        // flags[lastRow][lastCol][2]에 lastRow, lastCol에 대한 오류 검사 메소드 결과를 저장
+        flags[lastRow][lastCol][1] = !buttonText.isEmpty();
+        flags[lastRow][lastCol][2] = errorCheck(lastRow, lastCol);
 
-        // 만약 오류 검사를 했을 때, 오류가 없다면
-            // textView[lastRow][lastCol]의 글자 색을 검은 색으로 설정
-            // 게임 종료 여부를 판단했을 때, 끝났다면
-                // "당신의 승리입니다"라는 메시지 출력
-                // 보드 채우기 (fillBoard)
-                // 메소드 나가기(return;)
-
-        // 만약 오류 검사를 했을 때, 오류가 있다면
-            // textView[lastRow][lastCol]의 글자 색을 빨간 색으로 설정
+        if(flags[lastRow][lastCol][2]){
+            textView[lastRow][lastCol].setTextColor(Color.BLACK);
+            if(winningCheck()){
+                // show message
+                Toast.makeText(getApplicationContext(), "당신의 승리입니다.", Toast.LENGTH_SHORT).show();
+                fillBoard();
+                return;
+            }
+        } else {
+            textView[lastRow][lastCol].setTextColor(Color.RED);
+        }
 
         // 십자 색상 제거
+        crossColoring(lastRow, lastCol, false);
         // 이전 클릭 내역 지우기
+        lastRow = lastCol = -1;
         // 버튼 비활성화
+        toggleButtons(false);
+
     }
 
     @Override   // 메뉴 inflating
@@ -289,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
         red = 255;
 
-        // set background color for selected textView
+        // set background color of selected textView
         textView[row][col].setBackgroundColor(Color.argb(alpha, red, green, blue));
 
     }
@@ -303,22 +326,44 @@ public class MainActivity extends AppCompatActivity {
 
     // 논리적 오류가 있는지 검사
     private boolean errorCheck(int row, int col) {
+        boolean rtn = true; // 초기 값은 오류가 없다고 설정
 
-        // 지정한 위치에 해당하는 textView의 문자열을 가져옴
-        // 빈 문자열 선택에 대한 가드 (empty 인 경우 return)
+        String buttonText = textView[row][col].getText().toString();
+
+        // 빈 문자열 선택에 대한 가드
+        if(buttonText.isEmpty()){
+            return true;
+        }
+        int startRowIdx = (row / 3) * 3;
+        int startColIdx = (col / 3) * 3;
 
         // 가로 세로 오류 체크
-        // 3 by 3 박스 오류 체크
-        // 오류 검사 결과 return
+        for(int i=0; i<9; i++) {
+            boolean bRow = textView[i][col].getText().toString().equals(buttonText);
+            boolean bCol = textView[row][i].getText().toString().equals(buttonText);
+            rtn = rtn && (row == i || !bRow) && (col == i || !bCol);
+        }
 
-        return true;
+        // 박스 체크
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++) {
+                boolean bBox = textView[startRowIdx+i][startColIdx+j].getText().toString().equals(buttonText);
+                rtn = rtn && ((row == startRowIdx+i && col == startColIdx+j) || !bBox);
+            }
+        }
+        return rtn;
     }
 
     // 이겼는지 여부를 검사
     private boolean winningCheck(){
-        // 반복문을 이용하여 모든 flags[i][j][1]과 flags[i][j][2]가 true인지 검사
-        // 검사 결과 return
-        return true;
+        boolean rtn = true;
+        for(int i=0; i<9; i++) {
+            for (int j=0; j<9; j++) {
+                if(!flags[i][j][0]){
+                    rtn = rtn && flags[i][j][1] && flags[i][j][2];
+                }
+            }
+        }
+        return rtn;
     }
 }
-
