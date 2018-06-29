@@ -38,107 +38,20 @@ public class MainActivity extends AppCompatActivity {
         textView = new TextView[9][9];
         flags = new boolean[9][9][3]; // [][][0] means question, [][][1] means not Empty, [][][2] means no error
 
-        textView[0][0] = findViewById(R.id.textView00);
-        textView[0][1] = findViewById(R.id.textView01);
-        textView[0][2] = findViewById(R.id.textView02);
-        textView[0][3] = findViewById(R.id.textView03);
-        textView[0][4] = findViewById(R.id.textView04);
-        textView[0][5] = findViewById(R.id.textView05);
-        textView[0][6] = findViewById(R.id.textView06);
-        textView[0][7] = findViewById(R.id.textView07);
-        textView[0][8] = findViewById(R.id.textView08);
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                String name = "textView" + i + j;
+                int viewId = getResources().getIdentifier(name, "id", getPackageName());
+                textView[i][j] = findViewById(viewId);
+            }
+        }
 
-        textView[1][0] = findViewById(R.id.textView10);
-        textView[1][1] = findViewById(R.id.textView11);
-        textView[1][2] = findViewById(R.id.textView12);
-        textView[1][3] = findViewById(R.id.textView13);
-        textView[1][4] = findViewById(R.id.textView14);
-        textView[1][5] = findViewById(R.id.textView15);
-        textView[1][6] = findViewById(R.id.textView16);
-        textView[1][7] = findViewById(R.id.textView17);
-        textView[1][8] = findViewById(R.id.textView18);
-
-        textView[2][0] = findViewById(R.id.textView20);
-        textView[2][1] = findViewById(R.id.textView21);
-        textView[2][2] = findViewById(R.id.textView22);
-        textView[2][3] = findViewById(R.id.textView23);
-        textView[2][4] = findViewById(R.id.textView24);
-        textView[2][5] = findViewById(R.id.textView25);
-        textView[2][6] = findViewById(R.id.textView26);
-        textView[2][7] = findViewById(R.id.textView27);
-        textView[2][8] = findViewById(R.id.textView28);
-
-        textView[3][0] = findViewById(R.id.textView30);
-        textView[3][1] = findViewById(R.id.textView31);
-        textView[3][2] = findViewById(R.id.textView32);
-        textView[3][3] = findViewById(R.id.textView33);
-        textView[3][4] = findViewById(R.id.textView34);
-        textView[3][5] = findViewById(R.id.textView35);
-        textView[3][6] = findViewById(R.id.textView36);
-        textView[3][7] = findViewById(R.id.textView37);
-        textView[3][8] = findViewById(R.id.textView38);
-
-        textView[4][0] = findViewById(R.id.textView40);
-        textView[4][1] = findViewById(R.id.textView41);
-        textView[4][2] = findViewById(R.id.textView42);
-        textView[4][3] = findViewById(R.id.textView43);
-        textView[4][4] = findViewById(R.id.textView44);
-        textView[4][5] = findViewById(R.id.textView45);
-        textView[4][6] = findViewById(R.id.textView46);
-        textView[4][7] = findViewById(R.id.textView47);
-        textView[4][8] = findViewById(R.id.textView48);
-
-        textView[5][0] = findViewById(R.id.textView50);
-        textView[5][1] = findViewById(R.id.textView51);
-        textView[5][2] = findViewById(R.id.textView52);
-        textView[5][3] = findViewById(R.id.textView53);
-        textView[5][4] = findViewById(R.id.textView54);
-        textView[5][5] = findViewById(R.id.textView55);
-        textView[5][6] = findViewById(R.id.textView56);
-        textView[5][7] = findViewById(R.id.textView57);
-        textView[5][8] = findViewById(R.id.textView58);
-
-        textView[6][0] = findViewById(R.id.textView60);
-        textView[6][1] = findViewById(R.id.textView61);
-        textView[6][2] = findViewById(R.id.textView62);
-        textView[6][3] = findViewById(R.id.textView63);
-        textView[6][4] = findViewById(R.id.textView64);
-        textView[6][5] = findViewById(R.id.textView65);
-        textView[6][6] = findViewById(R.id.textView66);
-        textView[6][7] = findViewById(R.id.textView67);
-        textView[6][8] = findViewById(R.id.textView68);
-
-        textView[7][0] = findViewById(R.id.textView70);
-        textView[7][1] = findViewById(R.id.textView71);
-        textView[7][2] = findViewById(R.id.textView72);
-        textView[7][3] = findViewById(R.id.textView73);
-        textView[7][4] = findViewById(R.id.textView74);
-        textView[7][5] = findViewById(R.id.textView75);
-        textView[7][6] = findViewById(R.id.textView76);
-        textView[7][7] = findViewById(R.id.textView77);
-        textView[7][8] = findViewById(R.id.textView78);
-
-        textView[8][0] = findViewById(R.id.textView80);
-        textView[8][1] = findViewById(R.id.textView81);
-        textView[8][2] = findViewById(R.id.textView82);
-        textView[8][3] = findViewById(R.id.textView83);
-        textView[8][4] = findViewById(R.id.textView84);
-        textView[8][5] = findViewById(R.id.textView85);
-        textView[8][6] = findViewById(R.id.textView86);
-        textView[8][7] = findViewById(R.id.textView87);
-        textView[8][8] = findViewById(R.id.textView88);
-
-        button[0] = findViewById(R.id.button0);
-        button[1] = findViewById(R.id.button1);
-        button[2] = findViewById(R.id.button2);
-        button[3] = findViewById(R.id.button3);
-        button[4] = findViewById(R.id.button4);
-        button[5] = findViewById(R.id.button5);
-        button[6] = findViewById(R.id.button6);
-        button[7] = findViewById(R.id.button7);
-        button[8] = findViewById(R.id.button8);
-        button[9] = findViewById(R.id.button9);
-    }
+        for(int i=0; i<10; i++){
+            String name = "button"+i;
+            int viewId = getResources().getIdentifier(name, "id", getPackageName());
+            button[i] = findViewById(viewId);
+        }
+     }
 
     private void fillBoard(){
         lastRow = lastCol = -1;
